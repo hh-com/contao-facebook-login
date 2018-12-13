@@ -1,0 +1,6 @@
+facebook_login.controller.callback:
+  path: /fblogincallback
+  defaults:
+    _scope: frontend
+    _token_check: false
+    _controller: facebook_login.controller.callback::fblogincallback
