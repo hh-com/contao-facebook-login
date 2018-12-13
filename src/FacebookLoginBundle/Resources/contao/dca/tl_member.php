@@ -15,8 +15,6 @@
 /**
  * Add palettes to tl_member
  */
-$GLOBALS['TL_DCA']['tl_member']['palettes']['default'] = str_replace('assignDir;', 'assignDir;{picture_legend},pictureSRC;', $GLOBALS['TL_DCA']['tl_member']['palettes']['default']);
-
 $GLOBALS['TL_DCA']['tl_member']['subpalettes']['login'] = str_replace('username,', 'username,facebookId,', $GLOBALS['TL_DCA']['tl_member']['subpalettes']['login']);
 
 
@@ -50,14 +48,3 @@ $GLOBALS['TL_DCA']['tl_member']['fields']['facebookId'] = array
 	'sql'                     => "varchar(255) NOT NULL default ''"
 );
 
-$GLOBALS['TL_DCA']['tl_member']['fields']['pictureSRC'] = array
-(
-	'label'                   => &$GLOBALS['TL_LANG']['tl_member']['pictureSRC'],
-	'exclude'                 => true,
-	'inputType'               => 'fileTree',
-	'eval'                    => array('multiple'=>false,'filesOnly'=>true, 'fieldType'=>'radio', 'mandatory'=>false, 'tl_class'=>'clr'),
-	'load_callback' 		  => array(),
-	'save_callback' 		  => array(),
-	'sql'                     => "binary(16) NULL"
-	
-);

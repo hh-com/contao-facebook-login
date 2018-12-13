@@ -21,7 +21,12 @@ use Contao\MemberGroupModel;
 use Contao\MemberModel;
 use Contao\ModuleModel;
 use Contao\PageModel;
+use Contao\FilesModel;
+use Contao\Folder;
+use Contao\File;
+use Contao\Image;
 use Contao\System;
+use Contao\ArtistHooks;
 use Facebook\GraphNodes\GraphUser;
 use FacebookLoginBundle\Facebook\FacebookFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -180,7 +185,7 @@ class CallbackController implements FrameworkAwareInterface
     protected function loginUser(GraphUser $graphUser, ModuleModel $module): FrontendUser
     {
         $time = time();
-
+        $objHomeDir;
         // get the data to be saved
         $saveData = deserialize($module->fbLoginData, true);
 
@@ -190,15 +195,6 @@ class CallbackController implements FrameworkAwareInterface
             // create username
             $username = ($graphUser['email'] && \in_array('email', $saveData, true)) ? $graphUser['email'] : 'fb_'.$graphUser['id'];
 
-            var_dump( $graphUser->getField('picture')['url'] );
-
-            $data = file_get_contents( $graphUser->getField('picture')['url']);
-
-            #echo $data;
-            
-            #var_dump( $graphUser['picture']);
-            var_dump( $module);
-            exit;
             // create a new user
             $member = new MemberModel();
             $member->tstamp = $time;
@@ -212,12 +208,54 @@ class CallbackController implements FrameworkAwareInterface
             $member->facebookId = $graphUser['id'];
             $member->language = \in_array('locale', $saveData, true) ? $graphUser['locale'] : '';
             $member->groups = $module->reg_groups;
-            
-            /* USER - VERZEICHNIS ANLEGEN */
-
-
-
+            $member->alias = "";
             $member->save();
+
+            // CREATE HomeDIR for User after first save (to get the id)
+            $objHomeDir = FilesModel::findByUuid($module->reg_homeDir);
+            
+            if ($objHomeDir !== null)
+            {
+                $strUserDir = 'user_' . $member->id;
+
+                // Add the user ID if the directory exists
+                while (is_dir(TL_ROOT . '/' . $objHomeDir->path . '/' . $strUserDir))
+                {
+                    $strUserDir .= '_' . $member->id;
+                }
+
+                // Create the user folder
+                new Folder($objHomeDir->path . '/' . $strUserDir);
+
+                $objUserDir = FilesModel::findByPath($objHomeDir->path . '/' . $strUserDir);
+
+                // Save the folder ID
+                $member->assignDir = 1;
+                $member->homeDir = $objUserDir->uuid;
+                $member->save();
+            }
+
+            /* If image is available*/
+            if ($graphUser->getField('picture')['url']) 
+            {
+                $homeDirModel = FilesModel::findByUuid($member->homeDir);
+
+                $strFile = $homeDirModel->path . "/usr" . $member->id . ".jpg";
+                $picture = file_get_contents( $graphUser->getField('picture')['url']); 
+                
+                $newFile = new File($strFile, false);
+                $newFile->write( $picture );
+                $newFile->close();
+                
+                $objFile = \Dbafs::addResource($strFile);
+
+                $member->pictureSRC = $objFile->uuid;
+                $member->save();
+
+            }
+
+
+            
         }
 
         // Get the user
