@@ -15,8 +15,9 @@
 /**
  * Add palettes to tl_member
  */
-$GLOBALS['TL_DCA']['tl_member']['subpalettes']['login'] = str_replace('username,', 'username,facebookId,', $GLOBALS['TL_DCA']['tl_member']['subpalettes']['login']);
 $GLOBALS['TL_DCA']['tl_member']['palettes']['default'] = str_replace('assignDir;', 'assignDir;{picture_legend},pictureSRC;', $GLOBALS['TL_DCA']['tl_member']['palettes']['default']);
+
+$GLOBALS['TL_DCA']['tl_member']['subpalettes']['login'] = str_replace('username,', 'username,facebookId,', $GLOBALS['TL_DCA']['tl_member']['subpalettes']['login']);
 
 
 /**
