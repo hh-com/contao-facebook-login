@@ -55,7 +55,7 @@ $GLOBALS['TL_DCA']['tl_member']['fields']['pictureSRC'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_member']['pictureSRC'],
 	'exclude'                 => true,
 	'inputType'               => 'fileTree',
-	'eval'                    => array('multiple'=>false,'filesOnly'=>true, 'fieldType'=>'radio', 'mandatory'=>true, 'tl_class'=>'clr'),
+	'eval'                    => array('multiple'=>false,'filesOnly'=>true, 'fieldType'=>'radio', 'mandatory'=>false, 'tl_class'=>'clr'),
 	'load_callback' 		  => array(),
 	'save_callback' 		  => array(),
 	'sql'                     => "binary(16) NULL"

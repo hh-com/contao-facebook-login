@@ -151,7 +151,7 @@ class CallbackController implements FrameworkAwareInterface
         }
 
         try {
-            $response = $fb->get('/me?fields=id,name,email,first_name,middle_name,last_name,gender,locale', $accessToken->getValue());
+            $response = $fb->get('/me?fields=id,name,email,first_name,middle_name,last_name,gender,locale,picture.width(500).height(500)', $accessToken->getValue());
         } catch (\Exception $e) {
             System::log($e->getMessage(), __METHOD__, TL_ERROR);
 
@@ -190,6 +190,15 @@ class CallbackController implements FrameworkAwareInterface
             // create username
             $username = ($graphUser['email'] && \in_array('email', $saveData, true)) ? $graphUser['email'] : 'fb_'.$graphUser['id'];
 
+            var_dump( $graphUser->getField('picture')['url'] );
+
+            $data = file_get_contents( $graphUser->getField('picture')['url']);
+
+            #echo $data;
+            
+            #var_dump( $graphUser['picture']);
+            var_dump( $module);
+            exit;
             // create a new user
             $member = new MemberModel();
             $member->tstamp = $time;
@@ -203,6 +212,11 @@ class CallbackController implements FrameworkAwareInterface
             $member->facebookId = $graphUser['id'];
             $member->language = \in_array('locale', $saveData, true) ? $graphUser['locale'] : '';
             $member->groups = $module->reg_groups;
+            
+            /* USER - VERZEICHNIS ANLEGEN */
+
+
+
             $member->save();
         }
 
