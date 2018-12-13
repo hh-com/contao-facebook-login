@@ -188,7 +188,7 @@ class CallbackController implements FrameworkAwareInterface
         $member = MemberModel::findByFacebookId($graphUser['id']);
         if (null === $member) {
             // create username
-            $username = 'fb_'.$graphUser['id'];
+            $username = ($graphUser['email'] && \in_array('email', $saveData, true)) ? $graphUser['email'] : 'fb_'.$graphUser['id'];
 
             // create a new user
             $member = new MemberModel();
