@@ -13,12 +13,10 @@
 
 use Contao\StringUtil;
 
-
 $GLOBALS['TL_DCA']['tl_module']['palettes']['facebook_login'] = $GLOBALS['TL_DCA']['tl_module']['palettes']['login'];
 $GLOBALS['TL_DCA']['tl_module']['palettes']['facebook_login'] = str_replace('{redirect_legend', '{account_legend},reg_groups;{redirect_legend', $GLOBALS['TL_DCA']['tl_module']['palettes']['facebook_login']);
 $GLOBALS['TL_DCA']['tl_module']['palettes']['facebook_login'] = str_replace(',autologin', ',fbLoginData,fbLoginPerms;reg_homeDir', $GLOBALS['TL_DCA']['tl_module']['palettes']['facebook_login']);
 $GLOBALS['TL_DCA']['tl_module']['palettes']['facebook_login'] = str_replace(',cols,', ',', $GLOBALS['TL_DCA']['tl_module']['palettes']['facebook_login']);
-
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['fbLoginData'] = array
 (
