@@ -26,7 +26,7 @@ use Contao\Folder;
 use Contao\File;
 use Contao\Image;
 use Contao\System;
-use Contao\ArtistHooks;
+use ArtistHooks;
 use Facebook\GraphNodes\GraphUser;
 use FacebookLoginBundle\Facebook\FacebookFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -208,12 +208,16 @@ class CallbackController implements FrameworkAwareInterface
             $member->facebookId = $graphUser['id'];
             $member->language = \in_array('locale', $saveData, true) ? $graphUser['locale'] : '';
             $member->groups = $module->reg_groups;
-            $member->alias = "";
-            $member->save();
 
+            $artist = new ArtistHooks();
+            
+            $member->uniqueID = $artist->generateUniqueID();
+            $member->save(); # BECAUSE WE NEED AN ID to generate an alias 
+
+            $member->alias = $artist->generateUniqueAlias($member->firstname . " " . $member->lastname, $member->id);
+            $member->save();
             // CREATE HomeDIR for User after first save (to get the id)
             $objHomeDir = FilesModel::findByUuid($module->reg_homeDir);
-            
             if ($objHomeDir !== null)
             {
                 $strUserDir = 'user_' . $member->id;
