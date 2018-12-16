@@ -4,8 +4,8 @@
 
 <?php $this->block('content'); ?>
 
-  <form<?php if ($this->action): ?> action="<?= $this->action ?>"<?php endif; ?> id="<?= $this->formId ?>" method="post">
-    <div class="formbody">
+  <form<?php if ($this->action): ?> action="<?= $this->action ?>"<?php endif; ?> class="text-center" id="<?= $this->formId ?>" method="post">
+    <div class="formbody fb-login-form">
       <?php if ($this->message): ?>
         <p class="error"><?= $this->message ?></p>
       <?php endif; ?>
@@ -15,7 +15,9 @@
       <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId ?>">
       <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
       <div class="widget widget-submit">
-        <button type="submit" class="submit"><?= $this->slabel ?></button>
+        <button type="submit" class="submit fbLoginBtn">
+        <img src="<?php echo $this->getImage('/files/public/content/fblogin.png', 200, 46, 'proportional'); ?>" alt="<?= $this->slabel ?>" >
+        </button>
       </div>
       <?php if (!$this->logout && $this->autologin): ?>
         <div class="widget widget-checkbox">
