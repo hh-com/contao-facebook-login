@@ -6,8 +6,8 @@ facebook_login.controller.callback:
     _controller: facebook_login.controller.callback::fblogincallback
 
 facebook_login.controller.ajaxtags:
-   path: /ajax_tags/{action}
-   defaults:
-       _scope: frontend
-       _token_check: false
-       _controller: 'FacebookLoginBundle\Controller\AjaxtagsController'
+  path: /ajax_tags/{action}
+  defaults:
+      _scope: frontend
+      _token_check: false
+      _controller: 'FacebookLoginBundle\Controller\AjaxtagsController'
